@@ -486,7 +486,7 @@ class RestApiCountryRepositoryTest extends TestCase
   {
     $this->client
       ->shouldReceive('get')
-      ->with("api.io/countries/sort=population")
+      ->with("api.io/countries?sort=population")
       ->once()
       ->andReturn([$this->country, $this->country]);
     
@@ -509,9 +509,30 @@ It seems we have been covering all conditions of the HTTP server through the moc
 
 >  The CountryRepository follows the Open/Close principle. It also decoupled from HttpClient through dependency injection. These rules help to have a testable code which is so much important. An under-design software is not eligible for testing in the right way.
 
+
+
 ## Make it prettier
 
+By default the PHPUnit shows test results in a good simple way. If you want to try a prettier output, there are some third party packages that pretties output, Let's start with installation
+
+```shell
+composer require --dev codedungeon/phpunit-result-printer
+```
+
+Add printer configuration in `phpunit.xml`
+
+```xml
+<phpunit printerClass="Codedungeon\PHPUnitPrettyResultPrinter\Printer" colors="true">
+</phpunit>
+```
 
 
 
+### _Before_
+
+![Before](assets/before.png)
+
+### _After_ 
+
+![After](assets/after.png)
 
