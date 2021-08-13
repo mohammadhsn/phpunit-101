@@ -127,70 +127,70 @@ use PHPUnit\Framework\TestCase;
 
 class SluggifierTest extends TestCase
 {
-  /** @test */
-  public function it_returns_sluggified_string()
-  {
-        $originalString = 'This string will be sluggified';
-        $expectedResult = 'this-string-will-be-sluggified';
-		
-    		$sluggifier = new Sluggifier();
+	/** @test */
+	public function it_returns_sluggified_string()
+	{
+		$originalString = 'This string will be sluggified';
+		$expectedResult = 'this-string-will-be-sluggified';
 
-        $result = $sluggifier->sluggify($originalString);
+		$sluggifier = new Sluggifier();
 
-        $this->assertEquals($expectedResult, $result);
-    }
-  
-  	/** @test */
-  	public function it_returns_expected_for_strings_containing_numbers()
-    {
-        $originalString = 'This1 string2 will3 be 44 sluggified10';
-        $expectedResult = 'this1-string2-will3-be-44-sluggified10';
+		$result = $sluggifier->sluggify($originalString);
 
-        $sluggifier = new Sluggifier();
+		$this->assertEquals($expectedResult, $result);
+	}
 
-        $result = $sluggifier->sluggify($originalString);
+	/** @test */
+	public function it_returns_expected_for_strings_containing_numbers()
+	{
+		$originalString = 'This1 string2 will3 be 44 sluggified10';
+		$expectedResult = 'this1-string2-will3-be-44-sluggified10';
 
-        $this->assertEquals($expectedResult, $result);
-    }
-  
-  	/** @test */
-  	public function it_returns_expected_for_strings_containing_special_characters()
-    {
-        $originalString = 'This! @string#$ %$will ()be "sluggified';
-        $expectedResult = 'this-string-will-be-sluggified';
+		$sluggifier = new Sluggifier();
 
-        $sluggifier = new Sluggifier();
+		$result = $sluggifier->sluggify($originalString);
 
-        $result = $sluggifier->sluggify($originalString);
+		$this->assertEquals($expectedResult, $result);
+	}
 
-        $this->assertEquals($expectedResult, $result);
-    }
-  
-  	/** @test */
-  	public function it_returns_expected_for_strings_containing_non_english_characters()
-    {
-        $originalString = "Tänk efter nu – förr'n vi föser dig bort";
-        $expectedResult = 'tank-efter-nu-forrn-vi-foser-dig-bort';
+	/** @test */
+	public function it_returns_expected_for_strings_containing_special_characters()
+	{
+		$originalString = 'This! @string#$ %$will ()be "sluggified';
+		$expectedResult = 'this-string-will-be-sluggified';
 
-        $sluggifier = new Sluggifier();
+		$sluggifier = new Sluggifier();
 
-        $result = $sluggifier->sluggify($originalString);
+		$result = $sluggifier->sluggify($originalString);
 
-        $this->assertEquals($expectedResult, $result);
-    }
+		$this->assertEquals($expectedResult, $result);
+	}
 
-  	/** @test */
-    public function it_returns_expected_for_empty_strings()
-    {
-        $originalString = '';
-        $expectedResult = '';
+	/** @test */
+	public function it_returns_expected_for_strings_containing_non_english_characters()
+	{
+		$originalString = "Tänk efter nu – förr'n vi föser dig bort";
+		$expectedResult = 'tank-efter-nu-forrn-vi-foser-dig-bort';
 
-        $sluggifier = new Sluggifier();
+		$sluggifier = new Sluggifier();
 
-        $result = $sluggifier->sluggify($originalString);
+		$result = $sluggifier->sluggify($originalString);
 
-        $this->assertEquals($expectedResult, $result);
-    }
+		$this->assertEquals($expectedResult, $result);
+	}
+
+	/** @test */
+	public function it_returns_expected_for_empty_strings()
+	{
+		$originalString = '';
+		$expectedResult = '';
+
+		$sluggifier = new Sluggifier();
+
+		$result = $sluggifier->sluggify($originalString);
+
+		$this->assertEquals($expectedResult, $result);
+	}
 }
 
 ```
@@ -216,57 +216,57 @@ use PHPUnit\Framework\TestCase;
 
 class SluggifierTest extends TestCase
 {
-  private Sluggifier $sluggifier;
-  
-  protected function setUp(): void
-  {
-    $this->sluggifier = new Sluggifier();
-  }
-  
-  /** @test */
-  public function it_returns_sluggified_string()
-  {
-        $originalString = 'This string will be sluggified';
-        $expectedResult = 'this-string-will-be-sluggified';
+	private Sluggifier $sluggifier;
 
-        $this->assertEquals($expectedResult, $this->sluggifier->sluggify($originalString));
-    }
-  
-  	/** @test */
-  	public function it_returns_expected_for_strings_containing_numbers()
-    {
-        $originalString = 'This1 string2 will3 be 44 sluggified10';
-        $expectedResult = 'this1-string2-will3-be-44-sluggified10';
+	protected function setUp(): void
+	{
+		$this->sluggifier = new Sluggifier();
+	}
 
-        $this->assertEquals($expectedResult, $this->sluggifier->sluggify($originalString));
-    }
-  
-  	/** @test */
-  	public function it_returns_expected_for_strings_containing_special_characters()
-    {
-        $originalString = 'This! @string#$ %$will ()be "sluggified';
-        $expectedResult = 'this-string-will-be-sluggified';
+	/** @test */
+	public function it_returns_sluggified_string()
+	{
+		$originalString = 'This string will be sluggified';
+		$expectedResult = 'this-string-will-be-sluggified';
 
-        $this->assertEquals($expectedResult, $this->sluggifier->sluggify($originalString));
-    }
-  
-  	/** @test */
-  	public function it_returns_expected_for_strings_containing_non_english_characters()
-    {
-        $originalString = "Tänk efter nu – förr'n vi föser dig bort";
-        $expectedResult = 'tank-efter-nu-forrn-vi-foser-dig-bort';
+		$this->assertEquals($expectedResult, $this->sluggifier->sluggify($originalString));
+	}
 
-        $this->assertEquals($expectedResult, $this->sluggifier->sluggify($originalString));
-    }
+	/** @test */
+	public function it_returns_expected_for_strings_containing_numbers()
+	{
+		$originalString = 'This1 string2 will3 be 44 sluggified10';
+		$expectedResult = 'this1-string2-will3-be-44-sluggified10';
 
-  	/** @test */
-    public function it_returns_expected_for_empty_strings()
-    {
-        $originalString = '';
-        $expectedResult = '';
+		$this->assertEquals($expectedResult, $this->sluggifier->sluggify($originalString));
+	}
 
-        $this->assertEquals($expectedResult, $this->sluggifier->sluggify($originalString));
-    }
+	/** @test */
+	public function it_returns_expected_for_strings_containing_special_characters()
+	{
+		$originalString = 'This! @string#$ %$will ()be "sluggified';
+		$expectedResult = 'this-string-will-be-sluggified';
+
+		$this->assertEquals($expectedResult, $this->sluggifier->sluggify($originalString));
+	}
+
+	/** @test */
+	public function it_returns_expected_for_strings_containing_non_english_characters()
+	{
+		$originalString = "Tänk efter nu – förr'n vi föser dig bort";
+		$expectedResult = 'tank-efter-nu-forrn-vi-foser-dig-bort';
+
+		$this->assertEquals($expectedResult, $this->sluggifier->sluggify($originalString));
+	}
+
+	/** @test */
+	public function it_returns_expected_for_empty_strings()
+	{
+		$originalString = '';
+		$expectedResult = '';
+
+		$this->assertEquals($expectedResult, $this->sluggifier->sluggify($originalString));
+	}
 }
 ```
 
@@ -283,26 +283,26 @@ use PHPUnit\Framework\TestCase;
 
 class SluggifierTest extends TestCase
 {
-  private Sluggifier $sluggifier;
+	private Sluggifier $sluggifier;
   
-  protected function setUp(): void
-  {
-    $this->sluggifier = new Sluggifier();
-  }
+	protected function setUp(): void
+	{
+		$this->sluggifier = new Sluggifier();
+	}
   
-  /**
-  * @test
-  * @dataProvider sluggableProvider
-  */
-  public function it_returns_sluggified_string(string $originalString, string $expectedResult)
-  {
-    $this->assertEquals($expectedResult, $this->sluggifier->sluggify($originalString));
-  }
+	/**
+	* @test
+	* @dataProvider sluggableProvider
+	*/
+	public function it_returns_sluggified_string(string $originalString, string $expectedResult)
+	{
+		$this->assertEquals($expectedResult, $this->sluggifier->sluggify($originalString));
+	}
   
-  public function sluggableProvider(): array
+	public function sluggableProvider(): array
     {
         return [
-            ['This string will be sluggified', 'this-string-will-be-sluggified'],
+			['This string will be sluggified', 'this-string-will-be-sluggified'],
             ['THIS STRING WILL BE SLUGGIFIED', 'this-string-will-be-sluggified'],
             ['This1 string2 will3 be 44 sluggified10', 'this1-string2-will3-be-44-sluggified10'],
             ['This! @string#$ %$will ()be "sluggified', 'this-string-will-be-sluggified'],
@@ -356,7 +356,7 @@ use PHPUnit\Framework\TestCase;
 
 class PHPUnitTestCaseIntegratedWithMockery
 {
-  use MockeryPHPUnitIntegration;
+	use MockeryPHPUnitIntegration;
 }
   
 ```
@@ -374,46 +374,45 @@ namespace Acme\Repositories;
 
 class Country
 {  
-  public function __construct(public string $name,
-                              public string $iso3,
-                              public int $population,
-                              public string $continent) {}
-
+	public function __construct(public string $name,
+						  public string $iso3,
+						  public int $population,
+						  public string $continent) {}
+}
 
 
 interface CountryRepository
 {
-  public function findByIso3(string $iso3) ?Country;
-  
-  public function mostPopulous(): array;
-}
+	public function findByIso3(string $iso3) ?Country;
 
+	public function mostPopulous(): array;
+}
 
 
 class RestApiCountryRepository implements CountryRepository
 {
-  private HttpClient $client;
-  
-  public function __construct(private HttpClient $client) {
-        $this->client = $client;
-  }
-  
-  
-  public function findByIso3(string $iso3): ?Product
-  {
-    try {
-      $res = $this->client->get("api.io/countries/$iso3");
-      return new Country($res['name'], $res['iso3'], $res['population'], $res['continent']);
-    } catch(Throwable) {
-      return null
-    }
-  }
-  
-  public function mostPopulous(): array
-  {
-    $countries = $this->client->get('api.io/countries?sort=poopulation');
-    return array_map(fn (array $country) => new Country(...$country), $countries);
-  }
+	private HttpClient $client;
+
+	public function __construct(private HttpClient $client)
+	{
+		$this->client = $client;
+	}
+
+	public function findByIso3(string $iso3): ?Product
+	{
+		try {
+			$res = $this->client->get("api.io/countries/$iso3");
+			return new Country($res['name'], $res['iso3'], $res['population'], $res['continent']);
+		} catch(Throwable) {
+			return null;
+		}
+	}
+
+	public function mostPopulous(): array
+	{
+		$countries = $this->client->get('api.io/countries?sort=poopulation');
+		return array_map(fn (array $country) => new Country(...$country), $countries);
+	}
 }
 ```
 
@@ -441,68 +440,68 @@ namespace Test\Unit\Repositories;
 
 class RestApiCountryRepositoryTest extends TestCase
 {
-  private HttpClient $client;
-  
-  private array $country = [
-    'name' => 'Iran',
-    'iso3' => 'IRN',
-    'population' => 80_000_000,
-    'continent' => 'Asia',
-  ];
-  
-  protected function setUp(): void
-  {
-    $this->client = m::mock(HttpClient::mock); // is_a($this->client, HttpClient) -> true
-    $this->repository = new RestApiCountryRepository($this->client);
-  }
-  
-  /** @test */
-  public function it_finds_by_iso3() 
-  {
-    $this->client
-      ->shouldReceive('get')
-      ->with("api.io/countries/IRN")
-      ->once()
-      ->andReturn($this->country);
-    
-    $country = $this->repository->findByIsoo3('IRN');
- 
-    $this->assertEquals($this->country['name'], $country->name);
-    $this->assertEquals($this->country['iso3'], $country->name);
-    $this->assertEquals($this->country['population'], $country->population);
-    $this->assertEquals($this->country['continent'], $country->continent);
-    
-  }
-  
-  /** @test */
-  public function it_returns_null_when_a_country_does_not_exists() 
-  {
-    $this->client
-      ->shouldReceive('get')
-      ->with("api.io/countries/IRN")
-      ->once()
-      ->andThrows(new Exception);
-    
-    $this->assertNuull($this->repository->findByIsoo3('IRN'));
-  }
-  
-  /** @test */
-  public function it_fetches_most_populous()
-  {
-    $this->client
-      ->shouldReceive('get')
-      ->with("api.io/countries?sort=population")
-      ->once()
-      ->andReturn([$this->country, $this->country]);
-    
-    $countries = $this->repository->mostPopulous();
-    
-    $this->assertCount(2, $countries);
-    
-    $this->assertInstanceOf(Country::class, $countries[0]);
-    $this->assertInstanceOf(Country::class, $countries[1]);
-  }
-  
+	private HttpClient $client;
+
+	private array $country = [
+		'name' => 'Iran',
+		'iso3' => 'IRN',
+		'population' => 80_000_000,
+		'continent' => 'Asia',
+	];
+
+	protected function setUp(): void
+	{
+		$this->client = m::mock(HttpClient::mock); // is_a($this->client, HttpClient) -> true
+		$this->repository = new RestApiCountryRepository($this->client);
+	}
+
+	/** @test */
+	public function it_finds_by_iso3() 
+	{
+		$this->client
+			->shouldReceive('get')
+			->with("api.io/countries/IRN")
+			->once()
+			->andReturn($this->country);
+
+		$country = $this->repository->findByIsoo3('IRN');
+
+		$this->assertEquals($this->country['name'], $country->name);
+		$this->assertEquals($this->country['iso3'], $country->name);
+		$this->assertEquals($this->country['population'], $country->population);
+		$this->assertEquals($this->country['continent'], $country->continent);
+
+	}
+
+	/** @test */
+	public function it_returns_null_when_a_country_does_not_exists() 
+	{
+		$this->client
+			->shouldReceive('get')
+			->with("api.io/countries/IRN")
+			->once()
+			->andThrows(new Exception);
+
+		$this->assertNuull($this->repository->findByIsoo3('IRN'));
+	}
+
+	/** @test */
+	public function it_fetches_most_populous()
+	{
+		$this->client
+			->shouldReceive('get')
+			->with("api.io/countries?sort=population")
+			->once()
+			->andReturn([$this->country, $this->country]);
+
+		$countries = $this->repository->mostPopulous();
+
+		$this->assertCount(2, $countries);
+
+		$this->assertInstanceOf(Country::class, $countries[0]);
+		$this->assertInstanceOf(Country::class, $countries[1]);
+	}
+
 }
 ```
 
