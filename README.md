@@ -66,7 +66,7 @@ The next important tag is <testsuites> which is the parent of tests suites. Let'
 <phpunit>
   <testsuites>
     <testsuite name="unit">
-      <directory>test/Unit</directory>
+      <directory>tests/Unit</directory>
     </testsuite>
   </testsuites>
 </phpunit>
@@ -220,7 +220,7 @@ class SluggifierTest extends TestCase
   
   protected function setUp(): void
   {
-    $this->sluggifier = $sluggifier;
+    $this->sluggifier = new Sluggifier();
   }
   
   /** @test */
@@ -229,7 +229,7 @@ class SluggifierTest extends TestCase
         $originalString = 'This string will be sluggified';
         $expectedResult = 'this-string-will-be-sluggified';
 
-        $this->assertEquals($expectedResult, $this->sluggifier->sluggify($originalString););
+        $this->assertEquals($expectedResult, $this->sluggifier->sluggify($originalString));
     }
   
   	/** @test */
@@ -238,7 +238,7 @@ class SluggifierTest extends TestCase
         $originalString = 'This1 string2 will3 be 44 sluggified10';
         $expectedResult = 'this1-string2-will3-be-44-sluggified10';
 
-        $this->assertEquals($expectedResult, $this->sluggifier->sluggify($originalString););
+        $this->assertEquals($expectedResult, $this->sluggifier->sluggify($originalString));
     }
   
   	/** @test */
@@ -247,7 +247,7 @@ class SluggifierTest extends TestCase
         $originalString = 'This! @string#$ %$will ()be "sluggified';
         $expectedResult = 'this-string-will-be-sluggified';
 
-        $this->assertEquals($expectedResult, $this->sluggifier->sluggify($originalString););
+        $this->assertEquals($expectedResult, $this->sluggifier->sluggify($originalString));
     }
   
   	/** @test */
@@ -256,7 +256,7 @@ class SluggifierTest extends TestCase
         $originalString = "Tänk efter nu – förr'n vi föser dig bort";
         $expectedResult = 'tank-efter-nu-forrn-vi-foser-dig-bort';
 
-        $this->assertEquals($expectedResult, $this->sluggifier->sluggify($originalString););
+        $this->assertEquals($expectedResult, $this->sluggifier->sluggify($originalString));
     }
 
   	/** @test */
@@ -265,7 +265,7 @@ class SluggifierTest extends TestCase
         $originalString = '';
         $expectedResult = '';
 
-        $this->assertEquals($expectedResult, $this->sluggifier->sluggify($originalString););
+        $this->assertEquals($expectedResult, $this->sluggifier->sluggify($originalString));
     }
 }
 ```
@@ -287,16 +287,16 @@ class SluggifierTest extends TestCase
   
   protected function setUp(): void
   {
-    $this->sluggifier = $sluggifier;
+    $this->sluggifier = new Sluggifier();
   }
   
   /**
   * @test
   * @dataProvider sluggableProvider
   */
-  public function it_returns_sluggified_string(string $original, string $expected)
+  public function it_returns_sluggified_string(string $originalString, string $expectedResult)
   {
-    $this->assertEquals($expectedResult, $this->sluggifier->sluggify($originalString););
+    $this->assertEquals($expectedResult, $this->sluggifier->sluggify($originalString));
   }
   
   public function sluggableProvider(): array
@@ -392,7 +392,12 @@ interface CountryRepository
 
 class RestApiCountryRepository implements CountryRepository
 {
-  public function __construct(private HttpClient $client) {}
+  private HttpClient $client;
+  
+  public function __construct(private HttpClient $client) {
+        $this->client = $client;
+  }
+  
   
   public function findByIso3(string $iso3): ?Product
   {
