@@ -383,7 +383,7 @@ class Country
 
 interface CountryRepository
 {
-	public function findByIso3(string $iso3) ?Country;
+	public function findByIso3(string $iso3): ?Country;
 
 	public function mostPopulous(): array;
 }
@@ -436,7 +436,7 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use App\Repositories\RestApiCountryRepository;
   
-namespace Test\Unit\Repositories;
+namespace Test\Unit\Repositories\Mock;
 
 class RestApiCountryRepositoryTest extends TestCase
 {
@@ -513,7 +513,155 @@ It seems we have been covering all conditions of the HTTP server through the moc
 
 >  The CountryRepository follows the Open/Close principle. It also decoupled from HttpClient through dependency injection. These rules help to have a testable code which is so much important. An under-design software is not eligible for testing in the right way.
 
+Let's check the **fake** version of above scenario. Some people prefer fakes as test double in unit tests.
 
+
+```php
+<?php
+
+namespace Test\Unit\Repositories\Fake;
+
+class FakeCountryRepository implements CountryRepository
+{
+	private array $countries = [];
+
+	public function findByIso3(string $iso3): ?Country
+	{
+		return $this->countries[$iso3] ?? null;
+	}
+
+	public function mostPopulous(): array
+	{
+		usort($this->countries, fn(Country $country) => $country->population);
+		return $this->countries;
+	}
+
+	public function addCountry(Country $country)
+	{
+		$this->countries[$country->iso3] = $country;
+	}
+
+	public function removeCountry(string $iso3)
+	{
+		unset($this->countries[$country->iso3]);
+	}
+}
+
+```
+
+That's it, It seems there are some dificulties to getting use it due object creations:
+
+```php
+$repostiroy = new FakeCountryRepository();
+$repository->addCountry(new Country('Iran', 'IRN', 80_000_000, 'Asia'));
+$repository->addCountry(new Country('South Korea', 'KOR', 51_000_000, 'Asia'));
+...
+```
+
+There is a faker third party that provides painless fake objects, Let's check it.
+
+```sh
+composer require --dev fakerphp/faker
+```
+
+We could add a helper method in order to add fake countries to our fake repository
+
+```php
+<?php
+
+namespace Test\Unit\Repositories\Fake;
+
+
+class FakeCountryRepository implements CountryRepository
+{
+	private array $countries = [];
+
+	public function __construct(private Generator $faker)
+	{
+
+	}
+
+	public function findByIso3(string $iso3): ?Country
+	{
+		return $this->countries[$iso3] ?? null;
+	}
+
+	public function mostPopulous(): array
+	{
+		usort($this->countries, fn(Country $country) => $country->population);
+		return $this->countries;
+	}
+
+	public function addFakeCountry(array $overrides = []): Country
+	{
+		$country = new Country(
+			$overrides['name'] ?? $this->faker->country(),
+			$overrides['iso3'] ?? $this->faker->countryCode(),
+			$overrides['population'] ?? mt_rand(10000000, 100000000),
+			$overrides['continent'] ?? ['Asia', 'Africa', 'North America', 'South America', 'Antarctica', 'Europe', 'Oceania'][mt_rand(0, 6)]
+		);
+
+		$this->countries[$country->iso3] = $country;
+
+		return $country;
+	}
+}
+```
+
+Seems better now, Lets do it using the fake test double:
+
+```php
+<?php
+
+use PHPUnit\Framework\TestCase;
+use App\Repositories\RestApiCountryRepository;
+use Factory\Factory;
+  
+namespace Test\Unit\Repositories\Fake;
+
+class RestApiCountryRepositoryTest extends TestCase
+{
+	protected function setUp(): void
+	{
+		$this->repository = new FakeCountryRepository(Factory::create());
+	}
+
+	/** @test */
+	public function it_finds_by_iso3() 
+	{
+		$fakeCountry = $this->repository->addFakeCountry();
+
+		$country = $this->repository->findByIsoo3($fakeCountry->iso3);
+
+		$this->assertEquals($country->name, $fakeCountry->name);
+		$this->assertEquals($country->name, $fakeCountry->iso3);
+		$this->assertEquals($country->population, $fakeCountry->population);
+		$this->assertEquals($country->continent, $fakeCountry->continent);
+
+	}
+
+	/** @test */
+	public function it_returns_null_when_a_country_does_not_exists() 
+	{
+		$this->assertNuull($this->repository->findByIsoo3('IRN'));
+	}
+
+	/** @test */
+	public function it_fetches_most_populous()
+	{
+		$country1 = $this->repository->addFakeCountry(['population' => 10]);
+		$country2 = $this->repository->addFakeCountry(['population' => 100]);
+		$country3 = $this->repository->addFakeCountry(['population' => 1000]);
+
+		$mostPopulous = $this->repository->mostPopulous();
+
+		$this->assertEquals($country3->iso3, $mostPopulous[0]->iso3);
+		$this->assertEquals($country3->iso2, $mostPopulous[1]->iso3);
+		$this->assertEquals($country3->iso1, $mostPopulous[2]->iso3);
+	}
+}
+
+```
 
 ## Make it prettier
 
