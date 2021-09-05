@@ -341,7 +341,7 @@ PHPUnit supports test doubles as well.  An alternative library to working with t
 ### Installation
 
 ```shell
-composer requiure --dev mockery/mockery
+composer require --dev mockery/mockery
 ```
 
 To make it compatible with the PHPUnit, we should use the Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration in the test case:
