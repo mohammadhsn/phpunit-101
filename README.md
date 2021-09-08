@@ -398,7 +398,7 @@ class RestApiCountryRepository implements CountryRepository
 		$this->client = $client;
 	}
 
-	public function findByIso3(string $iso3): ?Product
+	public function findByIso3(string $iso3): ?Country
 	{
 		try {
 			$res = $this->client->get("api.io/countries/$iso3");
@@ -464,7 +464,7 @@ class RestApiCountryRepositoryTest extends TestCase
 			->once()
 			->andReturn($this->country);
 
-		$country = $this->repository->findByIsoo3('IRN');
+		$country = $this->repository->findByIso3('IRN');
 
 		$this->assertEquals($this->country['name'], $country->name);
 		$this->assertEquals($this->country['iso3'], $country->name);
